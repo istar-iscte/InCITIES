@@ -4,7 +4,6 @@ import plotly.io as pio
 from streamlit_echarts import st_echarts
 import pandas as pd
 import plotly.express as px
-from sqlalchemy import create_engine
 
 
 # Define domains
@@ -147,21 +146,10 @@ def plotly_chart_cards(plotly_chart, key_name, kpi):
     return figures
 
 
-# Database connection settings
-DB_NAME = 'emdat_db'
-DB_USER = 'postgres'
-DB_PASSWORD = 'admin'
-DB_HOST = 'localhost'
-DB_PORT = '5432'
-
-engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
-
 # Add charts for hazard resilience
 def hazard_resilience():
     
-    engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
-    query = 'SELECT * FROM emdat'
-    df = pd.read_sql(query, engine)
+    df = pd.read_excel("/home/bfss/incities/InCITIES/Emdat_database.xlsx")
 
     col1, col2, col3 = st.columns(3)
     with col1:

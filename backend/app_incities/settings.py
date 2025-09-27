@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-!$ec(jz5__oc6&fb%r(t8za3j#e-zl@1!!)s=a31q5!sb5iv-9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '10.82.20.71',
+    'incities',
+    '127.0.0.1', 
+    'localhost'
+]
 
 
 # Application definition
@@ -78,12 +83,9 @@ WSGI_APPLICATION = 'app_incities.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'emdat_db',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': 'localhost',
-        'PORT': '5432',     
+
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

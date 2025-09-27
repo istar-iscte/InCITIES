@@ -3,17 +3,8 @@ from streamlit_option_menu import option_menu
 from utils import *
 from PCA import *
 import pandas as pd
-from sqlalchemy import create_engine
 import warnings
 warnings.filterwarnings('ignore')
-
-DB_NAME = 'emdat_db'
-DB_USER = 'postgres'
-DB_PASSWORD = 'admin'
-DB_HOST = 'localhost'
-DB_PORT = '5432'
-
-engine = create_engine(f'postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}')
 
 st.set_page_config(page_title="InCITIES", page_icon=":cityscape:", layout="wide")
 
@@ -291,8 +282,7 @@ if menu == "Check List":
         ind_list = ["All indicators used", "Indicators that need improvement"]
         user_choice = st.selectbox("", ind_list)
     
-    query = 'SELECT * FROM kpi_list'
-    df = pd.read_sql(query, engine)
+    df = pd.read_excel("/home/bfss/incities/InCITIES/Indicators_InCITIES.xlsx")
     
     st.sidebar.header("Choose your filter")
     domain_list = df["Domain"].unique()
@@ -313,8 +303,7 @@ if menu == "Check List":
     
 if menu == "Cities Ranking":
 
-    query = 'SELECT * FROM pca'
-    df = pd.read_sql(query, engine)
+    df = pd.read_excel("/home/bfss/incities/InCITIES/PCA_data.xlsx")
     
     st.sidebar.header("Choose your filter")
     
