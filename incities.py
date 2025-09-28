@@ -1,14 +1,15 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from utils import *
-from PCA import *
+from dashboards.inclusion import *
+from dashboards.sustainability import *
+from dashboards.resilience import *
+from utils.utils import *
+from utils.pca import *
 import pandas as pd
-import warnings
-warnings.filterwarnings('ignore')
+
 
 st.set_page_config(page_title="InCITIES", page_icon=":cityscape:", layout="wide")
 
-# Create Menu side bar
 with st.sidebar:
     menu = option_menu(
     menu_title="Menu",
@@ -16,21 +17,20 @@ with st.sidebar:
     icons=["bar-chart", "buildings", "list-check"],
     menu_icon="cast"
     )
+ 
 
 if menu == "Indicators Charts":
+
     st.sidebar.header("Choose your filter")
-    # Create filter by Domain
     domain = st.sidebar.selectbox("Select domain:", domain_list)
 
-    # Create side bar filters
     if domain == "Inclusion": 
         sub_domain = st.sidebar.selectbox("Select sub-domain:", sub_domain_inclusion)
     elif domain == "Sustainability":
         sub_domain = st.sidebar.selectbox("Select sub-domain:", sub_domain_sustainability)
     else:
         sub_domain = st.sidebar.selectbox("Select sub-domain:", sub_domain_resilience)
-
-    # Add visualizations for Inclusion dashboard
+        
     if domain == "Inclusion":
         
         if sub_domain == "Social":
@@ -44,13 +44,14 @@ if menu == "Indicators Charts":
             with col2:
                 chart_list = ["Line Chart", "Map", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
+                
             if chart == "Line Chart":
-                echarts_option('line_chart_inclusion', 'dataset_code', dataset_code)
+                line_chart_inclusion(dataset_code)
             elif chart == "Map":
-                plotly_chart('map_inclusion', 'dataset_code', dataset_code)
+                map_inclusion(dataset_code)
             else:
-                echarts_option('bar_chart_inclusion', 'dataset_code', dataset_code)
-            
+                bar_chart_inclusion(dataset_code)
+                
             with st.expander("About KPI"):
                 st.caption(add_informative_texts(dataset_code))
                 
@@ -66,15 +67,15 @@ if menu == "Indicators Charts":
                 chart_list = ["Line Chart", "Map", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
             if chart == "Line Chart":
-                echarts_option('line_chart_inclusion', 'dataset_code', dataset_code)
+                line_chart_inclusion(dataset_code)
             elif chart == "Map":
-                plotly_chart('map_inclusion', 'dataset_code', dataset_code)
+                map_inclusion(dataset_code)
             else:
-                echarts_option('bar_chart_inclusion', 'dataset_code', dataset_code)
+                bar_chart_inclusion(dataset_code)
                 
             with st.expander("About KPI"):
-                st.caption(add_informative_texts(dataset_code))
-                
+                st.caption(add_informative_texts(dataset_code))           
+        
         else:
             st.title("🤝 Gender Inclusion")
             st.text("")
@@ -86,17 +87,15 @@ if menu == "Indicators Charts":
                 chart_list = ["Line Chart", "Map", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
             if chart == "Line Chart":
-                echarts_option('line_chart_inclusion', 'dataset_code', dataset_code)
+                line_chart_inclusion(dataset_code)
             elif chart == "Map":
-                plotly_chart('map_inclusion', 'dataset_code', dataset_code)
+                map_inclusion(dataset_code)
             else:
-                echarts_option('bar_chart_inclusion', 'dataset_code', dataset_code)
+                bar_chart_inclusion(dataset_code)
                 
             with st.expander("About KPI"):
                 st.caption(add_informative_texts(dataset_code))
 
-
-    # Add visualizations for Sustainability dashboard
     if domain == "Sustainability":
         
         if sub_domain == "Environmental":
@@ -114,19 +113,19 @@ if menu == "Indicators Charts":
                         chart_list = ["Line Chart", "Bar Chart"]
                         chart = st.selectbox("Choose type of chart:", chart_list)
                     if chart == "Line Chart":
-                        echarts_option('line_chart_GHG', 'dataset_code', kpi)
+                        line_chart_GHG(kpi)
                     else:
-                        echarts_option('bar_chart_GHG', 'dataset_code', kpi)
+                        bar_chart_GHG(kpi)
                 else:
-                    echarts_option('bar_chart_air_quality', 'kpi', kpi)  
-                    figures = plotly_chart_cards('card_air_quality', 'kpi', kpi)
+                    bar_chart_air_quality(kpi)  
+                    figures = card_air_quality(kpi)
                     cols = st.columns(len(figures))
                     for i, fig in enumerate(figures):
                         with cols[i]:
                             st.plotly_chart(fig, use_container_width=True)
                             
                 with st.expander("About KPI"):
-                    st.caption(add_informative_texts(kpi))   
+                    st.caption(add_informative_texts(kpi))
             
             if topic == "Energy":
                 col1, col2, col3 = st.columns(3)
@@ -137,14 +136,14 @@ if menu == "Indicators Charts":
                     chart_list = ["Line Chart", "Bar Chart"]
                     chart = st.selectbox("Choose type of chart:", chart_list)
                 if chart == "Line Chart":
-                    echarts_option_kpi('line_chart_energy', 'sdg_07_40', 'nrg_bal', 'REN')
+                    line_chart_energy('REN')
                 if chart == "Bar Chart":
-                    echarts_option_kpi('bar_chart_energy', 'sdg_07_40', 'nrg_bal', 'REN')   
+                    bar_chart_energy('REN')
                 with st.expander("About KPI"):
                     st.caption(add_informative_texts('REN'))   
             
             if topic == "Biodiversity":
-                    echarts_option('bar_chart_TPA_prot_area', 'dataset_code', 'env_bio4')
+                    bar_chart_TPA_prot_area()
                     with st.expander("About KPI"):
                         st.caption(add_informative_texts('env_bio4'))   
 
@@ -154,28 +153,28 @@ if menu == "Indicators Charts":
                     chart_list = ["Line Chart", "Bar Chart", "Donut Chart"]
                     chart = st.selectbox("Choose type of chart:", chart_list)
                 if chart == "Line Chart":
-                    echarts_option('line_chart_waste_recycled', 'dataset_code', 'env_wastrt')
+                    line_chart_waste_recycled()
                 elif chart == "Bar Chart":
-                    echarts_option('bar_chart_waste_recycled', 'dataset_code', 'env_wastrt')
+                    bar_chart_waste_recycled()
                 else:
-                    echarts_option('donut_chart_waste_recycled', 'dataset_code', 'env_wastrt')
+                    donut_chart_waste_recycled()
                 with st.expander("About KPI"):
                     st.caption(add_informative_texts('env_wastrt'))
-                
+            
         if sub_domain == "Economic":
             
             st.title("🌍📈 Economic Sustainability")
             col1, col2, col3 = st.columns(3)
             with col1:
-                    kpi_name = st.selectbox("Select KPI:", list(economic_sustainability_kpis.keys()))
-                    dataset_code = economic_sustainability_kpis[kpi_name]
+                kpi_name = st.selectbox("Select KPI:", list(economic_sustainability_kpis.keys()))
+                kpi = economic_sustainability_kpis[kpi_name]
             with col2:
                 chart_list = ["Line Chart", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
             if chart == "Line Chart":
-                echarts_option('line_chart_economic_sustainability', 'dataset_code', dataset_code)
+                line_chart_economic_sustainability(kpi)
             else:
-                echarts_option('bar_chart_economic_sustainability', 'dataset_code', dataset_code)
+                bar_chart_economic_sustainability(kpi)
                 
         if sub_domain == "Social":
             
@@ -184,16 +183,15 @@ if menu == "Indicators Charts":
             col1, col2, col3 = st.columns(3)
             with col1:
                 kpi_name = st.selectbox("Select KPI:", list(social_sustainability_kpis.keys()))
-                dataset_code = social_sustainability_kpis[kpi_name]
+                kpi = social_sustainability_kpis[kpi_name]
             with col2:
                 chart_list = ["Line Chart", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
             if chart == "Line Chart":
-                echarts_option('line_chart_social_sustainability', 'dataset_code', dataset_code)
+                line_chart_social_sustainability(kpi)
             else:
-                echarts_option('bar_chart_social_sustainability', 'dataset_code', dataset_code)
-
-    # Add visualizations for Resilience dashboard   
+                bar_chart_social_sustainability(kpi)
+                
     if domain == "Resilience":
 
         if sub_domain == "Social":
@@ -204,31 +202,30 @@ if menu == "Indicators Charts":
             if topic == "Educational equality":
                 col1, col2, col3 = st.columns(3)
                 with col1:
-                    kpi = st.selectbox("Select KPI:", list(edu_equality_kpis.keys()))
-                    dataset_code = edu_equality_kpis[kpi]
+                    kpi_list = st.selectbox("Select KPI:", list(edu_equality_kpis.keys()))
+                    kpi = edu_equality_kpis[kpi_list]
                 with col2:
                     chart_list = ["Line Chart", "Bar Chart"]
                     chart = st.selectbox("Type of chart:", chart_list)
                 
                 if chart == "Line Chart":
-                    echarts_option('line_chart_educational_equality', 'dataset_code', dataset_code)
+                    line_chart_educational_equality(kpi)
                 else:
-                    echarts_option('bar_chart_educational_equality', 'dataset_code', dataset_code)
-                
+                    bar_chart_educational_equality(kpi)  
             
             elif topic == "Demography":
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     kpi = st.selectbox("Select KPI:", list(demography_kpis.keys()))
                     dataset_code = demography_kpis[kpi] 
-                if dataset_code == "demo_r_pjangrp3":  
-                    echarts_option_without_kpi('donut_chart_demo_pop_productive_age')
+                if dataset_code == "demo_r_pjangrp3":
+                    donut_chart_demo_pop_productive_age()
                 if dataset_code == "demo_r_pjangrp3_aged":
-                    echarts_option_without_kpi('donut_chart_demo_pop_aged_65')
+                    donut_chart_demo_pop_aged_65()
                 if dataset_code == "demo_r_d3dens":
-                    echarts_option_without_kpi('bar_chart_demo_pop_density')        
+                    bar_chart_demo_pop_density()
             else:
-                echarts_option_without_kpi('donut_chart_transportation_access')
+                donut_chart_transportation_access()
             
         if sub_domain == "Economic":
             st.title("🏙️📈 Economic Resilience")
@@ -240,9 +237,9 @@ if menu == "Indicators Charts":
                 chart_list = ["Line Chart", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
             if chart == "Line Chart":
-                echarts_option('line_chart_economic_resilience', 'dataset_code', dataset_code)
+                line_chart_economic_resilience(kpi)
             else:
-                echarts_option('bar_chart_economic_resilience', 'dataset_code', dataset_code)
+                bar_chart_economic_resilience(kpi)
             
         if sub_domain == "Infrastructure":
             st.title("🏗️💪 Infrastructure Resilience")
@@ -251,9 +248,9 @@ if menu == "Indicators Charts":
                 chart_list = ["Line Chart", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
             if chart == "Line Chart":
-                echarts_option_without_kpi('line_chart_infrastructure_resilience')
+                line_chart_infrastructure_resilience()
             else:
-                echarts_option_without_kpi('bar_chart_infrastructure_resilience')
+                bar_chart_infrastructure_resilience()
             
         if sub_domain == "Hazard":
             st.title("🚨🛡️ Hazard Resilience")
@@ -268,42 +265,14 @@ if menu == "Indicators Charts":
                 chart_list = ["Line Chart", "Bar Chart"]
                 chart = st.selectbox("Choose type of chart:", chart_list)
             if chart == "Line Chart":
-                echarts_option_without_kpi('line_chart_institutional_resilience')
+                line_chart_institutional_resilience()
             else:
-                echarts_option_without_kpi('bar_chart_institutional_resilience')
-        
-        
-if menu == "Check List":
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        st.header("Indicators Check List")
-    with col2:
-        ind_list = ["All indicators used", "Indicators that need improvement"]
-        user_choice = st.selectbox("", ind_list)
-    
-    df = pd.read_excel("/home/bfss/incities/InCITIES/Indicators_InCITIES.xlsx")
-    
-    st.sidebar.header("Choose your filter")
-    domain_list = df["Domain"].unique()
-    domain = st.sidebar.selectbox("Select domain:", domain_list)
-    
-    df = df[df["Domain"] == domain]
-    
-    if user_choice == "Indicators that need improvement":
-        df.dropna(subset=['Notes'], inplace=True)
-    
-    df.fillna("-", inplace=True)
-    df = df[["Indicator", "Database", "Spatial Level", "Notes"]]
-    
-    st.text("")
-    
-    st.table(df)
+                bar_chart_institutional_resilience()
 
-    
+
 if menu == "Cities Ranking":
 
-    df = pd.read_excel("/home/bfss/incities/InCITIES/PCA_data.xlsx")
+    df = pd.read_excel("C:/Users/User/Desktop/streamlit-app/data/PCA_data.xlsx")
     
     st.sidebar.header("Choose your filter")
     
@@ -408,3 +377,31 @@ if menu == "Cities Ranking":
  
         radar_plot(df, city)
         radar_plot_all_cities(df)
+        
+        
+if menu == "Check List":
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.header("Indicators Check List")
+    with col2:
+        ind_list = ["All indicators used", "Indicators that need improvement"]
+        user_choice = st.selectbox("", ind_list)
+    
+    df = pd.read_excel("C:/Users/User/Desktop/streamlit-app/data/Indicators_InCITIES.xlsx")
+    
+    st.sidebar.header("Choose your filter")
+    domain_list = df["Domain"].unique()
+    domain = st.sidebar.selectbox("Select domain:", domain_list)
+    
+    df = df[df["Domain"] == domain]
+    
+    if user_choice == "Indicators that need improvement":
+        df.dropna(subset=['Notes'], inplace=True)
+    
+    df.fillna("-", inplace=True)
+    df = df[["Indicator", "Database", "Spatial Level", "Notes"]]
+    
+    st.text("")
+    
+    st.table(df)
