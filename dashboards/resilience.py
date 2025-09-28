@@ -6,6 +6,7 @@ from utils.echarts import *
 from utils.get_api_data import get_eurostat_api_data
 from streamlit_echarts import st_echarts
 
+
 # ----------------------- Social Resilience -----------------------
 
 # Educational equality
@@ -509,7 +510,7 @@ def bar_chart_infrastructure_resilience():
 
 def hazard_resilience():
     
-    df = pd.read_excel("C:/Users/User/Desktop/streamlit-app/data/Emdat_database.xlsx")
+    df = pd.read_excel('/home/bfss/incities/InCITIES/data/Emdat_database.xlsx') 
 
     col1, col2, col3 = st.columns(3)
     with col1:

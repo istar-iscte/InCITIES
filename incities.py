@@ -272,7 +272,7 @@ if menu == "Indicators Charts":
 
 if menu == "Cities Ranking":
 
-    df = pd.read_excel("C:/Users/User/Desktop/streamlit-app/data/PCA_data.xlsx")
+    df = pd.read_excel('/home/bfss/incities/InCITIES/data/PCA_data.xlsx')
     
     st.sidebar.header("Choose your filter")
     
@@ -388,7 +388,7 @@ if menu == "Check List":
         ind_list = ["All indicators used", "Indicators that need improvement"]
         user_choice = st.selectbox("", ind_list)
     
-    df = pd.read_excel("C:/Users/User/Desktop/streamlit-app/data/Indicators_InCITIES.xlsx")
+    df = pd.read_excel('/home/bfss/incities/InCITIES/data/Indicators_InCITIES.xlsx')
     
     st.sidebar.header("Choose your filter")
     domain_list = df["Domain"].unique()
