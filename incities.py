@@ -10,6 +10,26 @@ import pandas as pd
 
 st.set_page_config(page_title="InCITIES", page_icon=":cityscape:", layout="wide")
 
+st.markdown("""
+    <style>
+        .top-right-logos {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 15px;
+        }
+        .top-right-logos img {
+            height: 60px;
+        }
+    </style>
+    <div class="top-right-logos">
+        <img src="https://commission.europa.eu/sites/default/files/styles/embed_medium/public/2025-03/ec-logo-horiz_en.png?itok=Chx9ysxM">
+        <img src="https://incities.eu/wp-content/uploads/2022/11/inCITIES_logo_prac.png">
+    </div>
+""", unsafe_allow_html=True)
+
+
 with st.sidebar:
     menu = option_menu(
     menu_title="Menu",
@@ -271,6 +291,8 @@ if menu == "Indicators Charts":
 
 
 if menu == "Cities Ranking":
+    
+    st.title("")
 
     df = pd.read_excel('/home/bfss/incities/InCITIES/data/PCA_data.xlsx')
     
@@ -380,6 +402,10 @@ if menu == "Cities Ranking":
         
         
 if menu == "Check List":
+    
+    st.text("")
+    st.text("")
+    st.text("")
     
     col1, col2 = st.columns(2)
     with col1:

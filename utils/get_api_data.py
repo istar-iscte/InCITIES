@@ -52,7 +52,7 @@ def get_openweather_api_data():
     data = []
     
     for city, (lat, lon) in cities_lat_lon_dict.items():
-        weather_api_url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={api_key}"
+        weather_api_url = f"https://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={api_key}"
         
         # Make the API request
         response = requests.get(weather_api_url)
