@@ -20,12 +20,13 @@ st.markdown("""
             gap: 15px;
         }
         .top-right-logos img {
-            height: 60px;
+            height: 70px;
         }
     </style>
     <div class="top-right-logos">
         <img src="https://commission.europa.eu/sites/default/files/styles/embed_medium/public/2025-03/ec-logo-horiz_en.png?itok=Chx9ysxM">
         <img src="https://incities.eu/wp-content/uploads/2022/11/inCITIES_logo_prac.png">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyyIldCyxl3ajdMKS9-x2FhK_xd0WXT-RbUw&s">
     </div>
 """, unsafe_allow_html=True)
 
@@ -37,7 +38,16 @@ with st.sidebar:
     icons=["bar-chart", "buildings", "list-check"],
     menu_icon="cast"
     )
- 
+    
+st.title("InCITIES Observatory")
+
+with st.expander("About"):
+    st.caption("The InCITIES Observatory, developed by under the [InCITIES](https://ciencia.iscte-iul.pt/projects/trailblazing-inclusive-sustainable-and-resilient-cities/1813) Horizon Europe funded project, automatically collects and aggregates indicators to assess the Inclusion, Sustainability, and Resilience of cities of InCITIES.")
+    
+    st.caption("The process began with a literature review to identify key indicators for evaluating city progress in these three domains. Based on these findings, and within the scope of a Master’s dissertation in the ISCTE’s Data Science programme, a web application was designed and implemented to visualise and analyse aggregated indicators for Inclusion, Sustainability, and Resilience of cities.") 
+    st.caption("Eurostat data relevant to these domains were selected, aggregated, and integrated into the application through automated retrieval. Priority is given to local data at the NUTS3 level to ensure sufficient granularity for accurate city-level comparisons and performance assessments. Indicators were chosen with historical data available since 2014, enabling the Observatory to provide insights into the evolution of urban inclusion, sustainability, and resilience.")
+    st.caption("Future data releases from Eurostat will continue to feed the platform, ensuring ongoing updates. The InCITIES Observatory web application offers two core features: indicator charts and city rankings. These tools provide urban planners, policymakers, and researchers with a robust resource for benchmarking and promoting best practices in urban development. This work was developed by Beatriz Santos and supervised by Associate Professors Catarina Ferreira da Silva and Assist. Professor Carmo Botelho (ISCTE).")
+
 
 if menu == "Indicators Charts":
 
@@ -292,7 +302,7 @@ if menu == "Indicators Charts":
 
 if menu == "Cities Ranking":
     
-    st.title("")
+    st.header("Cities Ranking")
 
     df = pd.read_excel('/home/bfss/incities/InCITIES/data/PCA_data.xlsx')
     
@@ -402,10 +412,6 @@ if menu == "Cities Ranking":
         
         
 if menu == "Check List":
-    
-    st.text("")
-    st.text("")
-    st.text("")
     
     col1, col2 = st.columns(2)
     with col1:
